@@ -6,11 +6,15 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
 import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.Headers
 import retrofit2.http.Path
 
 
+private const val API_KEY = "004E4F46-E02"
+
 private const val BASE_URL =
-    "https://wfa-media.com/exercise23/v3/api.php"
+    "https://wfa-media.com/"
 
 private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
@@ -22,9 +26,14 @@ private val retrofit = Retrofit.Builder()
     .build()
 
 interface TrainingApiService{
-
-    @GET("users/{id}")
-    suspend fun getUser(@Path("id") id: Int):user
+    @Headers(
+        "Content-Type: application/json",
+        "User-Agent: android",
+        "Accept: application/json",
+        "Authorization: $API_KEY"
+    )
+    @GET("/exercise23/v3/api.php/users/{id}")
+    suspend fun getUser(@Path("id") id: Int): User
 }
 
 object trainingApi{
