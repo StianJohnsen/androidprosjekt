@@ -7,37 +7,44 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.NavArgs
-import androidx.navigation.fragment.navArgs
+import androidx.navigation.fragment.findNavController
 import com.example.aktivitetapp.MyApplication
 import com.example.aktivitetapp.R
-import com.example.aktivitetapp.databinding.FragmentRegisterUserBinding
 import com.example.aktivitetapp.databinding.FragmentRegisterUserNumBinding
 import com.example.aktivitetapp.viewmodel.MyViewModel
 import com.example.aktivitetapp.viewmodel.TrainingViewModelFactory
 
+class RegisterUserNum : Fragment() {
 
-class RegisterUser : Fragment() {
-    private val args: RegisterUserArgs by navArgs()
-    private lateinit var binding: FragmentRegisterUserBinding
+    private lateinit var binding: FragmentRegisterUserNumBinding
     private val viewModel: MyViewModel by activityViewModels {
         TrainingViewModelFactory(
             (activity?.application as MyApplication).wholeRepo
         )
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val fragmentBinding = FragmentRegisterUserBinding.inflate(inflater,container,false)
+        val fragmentBinding = FragmentRegisterUserNumBinding.inflate(inflater,container,false)
         binding = fragmentBinding
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
-        Log.d("Heisann",args.phoneNum)
-        binding.fragmentTextView.text = args.phoneNum
+
+        val fragmentArgument = binding.numField.text
+        Log.d("Stian",fragmentArgument.toString())
+
+        binding.registerUserNum.setOnClickListener { moveToNextFragment(fragmentArgument.toString()) }
+
         return binding.root
+    }
+
+
+    fun moveToNextFragment(phoneNum: String){
+        Log.d("Stian",phoneNum)
+        val action = RegisterUserNumDirections.actionRegisterUserNumToRegisterUser(phoneNum)
+        findNavController().navigate(action)
     }
 
 }
