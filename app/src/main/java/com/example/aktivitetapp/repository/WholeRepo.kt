@@ -22,4 +22,18 @@ class WholeRepo constructor(
         }
     }
 
+    suspend fun postUser(user:User): Flow<User>{
+        val user = remoteRepo.postUser(user)
+        return flow() {
+            emit(user)
+        }
+    }
+
+    suspend fun getUserByNum(num: String): Flow<List<User>>{
+        val users = remoteRepo.getUserByNum(num)
+        return flow() {
+            emit(users)
+        }
+    }
+
 }

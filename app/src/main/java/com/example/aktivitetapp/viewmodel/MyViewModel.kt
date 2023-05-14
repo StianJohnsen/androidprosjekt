@@ -1,5 +1,6 @@
 package com.example.aktivitetapp.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +10,8 @@ import com.example.aktivitetapp.network.User
 import com.example.aktivitetapp.repository.WholeRepo
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import kotlin.jvm.Throws
 
 class MyViewModel (private val repository: WholeRepo): ViewModel(){
 
@@ -27,7 +30,33 @@ class MyViewModel (private val repository: WholeRepo): ViewModel(){
                 }
         }
     }
-}
+
+    fun postUser(user:User){
+        viewModelScope.launch {
+            try {
+                repository.postUser(user)
+                    .collect(){
+                        _user.postValue(it)
+                    }
+            }catch (exception: HttpException){
+                Log.d("training_app","http error")
+                }
+            }
+        }
+@Throws(Throwable::class)
+    fun getUserByNum(num:String){
+        viewModelScope.launch {
+                repository.getUserByNum(num) // Vi har en bruker med et nummer
+                    .collect(){
+                        _user.postValue(it[0])
+                    }
+            }
+
+            }
+        }
+
+
+
 
 
 class TrainingViewModelFactory(private val wholeRepo: WholeRepo): ViewModelProvider.Factory{

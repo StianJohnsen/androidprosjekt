@@ -18,4 +18,9 @@
         android:name="com.example.aktivitetapp.ui.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/registerUser2"
+        android:name="com.example.aktivitetapp.RegisterUser"
+        android:label="fragment_register_user"
+        tools:layout="@layout/fragment_register_user" />
 </navigation>
